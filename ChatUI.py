@@ -29,10 +29,10 @@ if "messages" not in st.session_state:
 
 if prompt := st.chat_input("What is up?"):
     st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.markdown(prompt)
+#    with st.chat_message("user"):
+#        st.markdown(prompt)
 
-#prompt = prompt if prompt else "POCO means"
+#prompt = prompt if prompt else "Tell me about you"
 if prompt:
     response = Core_Init.getResults( st.session_state["graph"], prompt)
     st.session_state.messages.append({"role": "assistant", "content": response})
