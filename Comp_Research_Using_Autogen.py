@@ -7,8 +7,6 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 from langchain_community.utilities import SerpAPIWrapper
 import asyncio
 import env
-# os.environ["GOOGLE_API_KEY"] = "AIzaSyBSwoNMaZcdfg4n-2LgFiUox0i7lxhmHvo"
-# os.environ["GOOGLE_SEARCH_ENGINE_ID"] = "f38f3fe0b4267471f"
 
 def get_glassdoor_rating(query: str):
     search = SerpAPIWrapper()
