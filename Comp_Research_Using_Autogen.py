@@ -7,6 +7,7 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 from langchain_community.utilities import SerpAPIWrapper
 import asyncio
 import env
+## make sure env file contains os.environ["OPENAI_API_KEY"] and os.environ["SERPAPI_API_KEY"]
 
 def get_glassdoor_rating(query: str):
     search = SerpAPIWrapper()
