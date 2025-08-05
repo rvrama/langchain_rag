@@ -18,6 +18,9 @@ Question:
 Answer:
 """
 
+# entried in .env
+#OPENAI_API_KEY = "sk-proj-..."
+#LANGSMITH_API_KEY = "lsv2_..."
 
 if "init" not in st.session_state:
     st.session_state["init"] = Core_Init.init('gpt-3.5-turbo', 'Text', promptText)
