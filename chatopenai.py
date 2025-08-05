@@ -1,4 +1,5 @@
-import env
+from dotenv import load_dotenv
+import os
 import streamlit as st
 from langchain_openai import ChatOpenAI
 from langchain import hub
@@ -6,8 +7,10 @@ from langchain.schema import HumanMessage
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationChain
 
+load_dotenv()
+open_api_key = os.getenv("OPENAI_API_KEY")
 # Initialize the LLM (Replace 'your-openai-api-key' with your actual API key)
-llm = ChatOpenAI(model_name="gpt-4o-mini")
+llm = ChatOpenAI(model_name="gpt-4o-mini", openai_api_key=open_api_key)
 
 # set the LANGSMITH_API_KEY environment variable (create key in settings)
 prompt = hub.pull("rvwaran/multichoice_quiz")

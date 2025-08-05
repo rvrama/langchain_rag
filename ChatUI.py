@@ -1,18 +1,34 @@
 from openai import OpenAI
 import streamlit as st
 import Core_Init
-import env
+import os
+
+open_api_key = os.getenv("OPENAI_API_KEY")
+promptText = """
+You are an assistant to help in answering ONLY related to pets. Use the following pieces of retrieved context to answer the question. 
+If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
+Do not provide any answers that are not relevant to the retrieved context or user question if the question is not related to pet handling or pet care.
+
+Context:
+{context}
+
+Question:
+{question}
+
+Answer:
+"""
+
 
 if "init" not in st.session_state:
-    st.session_state["init"] = Core_Init.init('gpt-3.5-turbo-instruct', 'rlm/rag-prompt')
+    st.session_state["init"] = Core_Init.init('gpt-3.5-turbo', 'Text', promptText)
 
 if "pages" not in st.session_state:
-    st.session_state["pages"] = Core_Init.file_loader(".\documents\dotnet.pdf")
+    st.session_state["pages"] = Core_Init.file_loader(".\\documents\\petcare.pdf")
 
 if "graph" not in st.session_state:
     st.session_state["graph"] = Core_Init.setUp(st.session_state["pages"])
 
-st.title("Get your answers from the AI")
+st.title("Ask me about your pets!!")
 
 #client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 # client = OpenAI()
