@@ -69,7 +69,7 @@ def setUp(pages):
     else:
         print("Creating new vectorstore from documents...")
         # Step 1: Chunk documents
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=25)
         docs = text_splitter.split_documents(pages)
 
         # Step 2: Create vector store from chunks
@@ -77,9 +77,6 @@ def setUp(pages):
 
         # Save to disk
         vector_store.save_local(VECTORSTORE_DIR)
-    # text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
-    # docs = text_splitter.split_documents(pages)
-    # vector_store = vectorstore.from_documents(pages, embeddings)
 
     # Define state for application
     class State(TypedDict):
@@ -94,15 +91,12 @@ def setUp(pages):
         query=state["question"], k=4
         )
         
-        RELEVANCE_THRESHOLD = 1.0  # Tweak as needed
+        RELEVANCE_THRESHOLD = 0.4  # Tweak as needed
         
         filtered_docs = [
         doc for doc, score in docs_with_scores if score <= RELEVANCE_THRESHOLD
         ]
 
-        # print("filtered docs : " + filtered_docs[0].page_content)
-        # print("------------retrieve---------completed-------")
-        
         if not filtered_docs:
         # Inject a fake doc with a polite message so _generate can still run
             return {
@@ -119,19 +113,9 @@ def setUp(pages):
             return {"answer": "I couldn’t find anything relevant in the documents I have."}
         docs_content = "\n\n".join(doc.page_content for doc in state["context"])
         
-        print("docs content : " + docs_content)
-        print("------------generate---------completed-------")
-        
         messages = prompt.invoke({"question": state["question"], "context": docs_content})
         response = llm.invoke(messages)
 
-#         response = openai.ChatCompletion.create(
-#            model="gpt-3.5-turbo",  # or gpt-4
-#             messages=[
-#         {"role": "system", "content": "Answer only using the context below. If the question is unrelated, reply: 'I'm not sure based on the provided information.'"},
-#         {"role": "user", "content": f"Context:\n{state["context"]}\n\nQuestion: {state["question"]}"}
-#     ]
-# )
         return {"answer": response.content}
 
     # Compile application and test
