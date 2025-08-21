@@ -5,3 +5,7 @@ logs
 
 # Environment
 .env
+env.py
+
+__pycache__/
+*.pyc

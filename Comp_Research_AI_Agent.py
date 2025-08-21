@@ -47,6 +47,6 @@ while True:
     if company_name.lower() == "exit":
         break
     result = executable.invoke({"query": company_name})
-    print("\n\n Company Summary:", result.get("company_summary"))
-    print("\n\n Financial Report:", result.get("financial_report"))
-    print("\n\n Glassdoor Rating:", result.get("glassdoor_rating"))
+    print("\n\n Company Summary:", result.get("company_summary")[:300])
+    print("\n\n Financial Report:", result.get("financial_report")[:300])
+    print("\n\n Glassdoor Rating:", result.get("glassdoor_rating")[:300])
