@@ -38,9 +38,6 @@ def analyze_stock(ticker: str) -> dict:  # type: ignore[type-arg]
     import pandas as pd
     import yfinance as yf
     from pytz import timezone  # type: ignore
-    
-    import matplotlib
-    matplotlib.use("Agg")
 
     stock = yf.Ticker(ticker)
 
@@ -176,7 +173,7 @@ review_analyst = AssistantAgent(
     system_message="You are a helpful AI assistant which retrieves the glassdoor ratings of the company",
 )
 
-termination = TextMentionTermination("TERMINIATE") | MaxMessageTermination(max_messages=5)
+termination = TextMentionTermination("TERMINIATE") | MaxMessageTermination(max_messages=10)
 
 team = SelectorGroupChat([planning_agent, company_researcher, finance_analyst, director_info, review_analyst], 
                         model_client=OpenAIChatCompletionClient(model="gpt-4o"),
@@ -189,13 +186,8 @@ async def main():
             break
         print(query)
         task = "Write about the company " + query
-        output = await team.run(task=task) 
-        #stream = team.run_stream(task=task)
-        #await Console(stream)
-        print("-- Result --")
-        print(output)
-        # final_outputs = [m.content for m in output.messages]  # if isinstance(m, TextMessage)
-        # print("\n\n".join(final_outputs))
+        stream = team.run_stream(task=task)
+        await Console(stream)
 
 if __name__ == "__main__":
   asyncio.run(main())
